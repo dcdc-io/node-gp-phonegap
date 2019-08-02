@@ -16,7 +16,7 @@ const loggingTransceive = async function(buffer) {
     return responseBuffer
 }
 
-# get a GlobalPlatform instance
+// get a GlobalPlatform instance
 const gpcard = new GlobalPlatform(loggingTransceive)
 await gpcard.connect()
 
