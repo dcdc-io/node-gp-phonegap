@@ -23,6 +23,10 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
 
+    status: function(message) {
+        document.getElementById("status").innerText = message
+    },
+
     // deviceready Event Handler
     //
     // Bind any cordova events here. Common events are:
@@ -33,49 +37,43 @@ var app = {
     },
 
     handleConnected: async function(nfcEvent) {
-
-        document.getElementById("status").innerText = nfcEvent.tag.techTypes.join(", ")
-
-        const tagId = nfc.bytesToHexString(nfcEvent.tag.id);
-        console.log('Processing', tagId);
-    
+        const techTypes = nfcEvent.tag.techTypes.join(", ")
+        console.log("tag present with tech types " + techTypes)
+        const tagId = nfc.bytesToHexString(nfcEvent.tag.id);    
         try {
             await nfc.connect('android.nfc.tech.IsoDep', 500);
-            console.log('xyz connected to', tagId);
+            console.log('connected to IsoDep device ' + tagId);
             
-            const trans = async function(buffer) {
-                console.log("xyz sending a buffer")
-                console.log("xyz = " + util.arrayBufferToHexString(buffer))
+            /** 
+             * the primary integration function for node-gp
+             * 
+             * make sure to return a buffer (or buffer-like) object
+            */
+            const loggingTransceive = async function(buffer) {
+                console.log(">> " + util.arrayBufferToHexString(buffer))
                 const responseBuffer = Buffer.from(await nfc.transceive(util.arrayBufferToHexString(buffer)))
-                console.log("xyz got a response buffer")
-                console.log("xyz = " + util.arrayBufferToHexString(responseBuffer))
+                console.log("<< " + util.arrayBufferToHexString(responseBuffer))
                 return responseBuffer
             }
 
-            const gpcard = new GlobalPlatform(trans)
-            console.log("xyz new GlobalPlatform")
-
+            const gpcard = new GlobalPlatform(loggingTransceive)
             await gpcard.connect()
 
-            alert("gp connected")
+            console.log("gpcard connected")
 
-            //let response = await nfc.transceive(DESFIRE_SELECT_PICC);
-            //ensureResponseIs('9000', response);
-            
-            //response = await nfc.transceive(DESFIRE_SELECT_AID);
-            //ensureResponseIs('9100', response);
-            // 91a0 means the requested application not found
-    
-            // alert('Selected application AA AA AA');
-    
-            // more transcieve commands go here
+            // print some stuff
+            const applets = await gpcard.getApplets()
+            const packages = await gpcard.getPackages()
+            app.status(`${applets.length} applets and ${packages.length} packages installed`)
             
         } catch (error) {
-            console.log("xyz " + error.toString())
-            alert(error);
+            console.error(error)
+            app.status(error.toString())
         } finally {
-            await nfc.close();
-            console.log('closed');
+            /**
+             * warning! closing the connection assumes we have finished working with the device
+             */
+            await nfc.close()
         }
     },
 
