@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 module.exports = function (context) {
     var fs = require('fs')
     let copy = ['node_modules/node-gp/browser/nodegp-bundle.debug.js']
