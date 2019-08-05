@@ -16,6 +16,6 @@ You should use the supplied browersify bundle in the `/browser` directory of the
 <script type="text/javascript" src="js/nodegp-bundle.debug.js"></script>
 ```
 
-In this example we automate the copying of `nodegp-bundle.debug.js` into your project `www/js` directory so you don't have to, by using a hook found [here.](https://github.com/dcdc-io/node-gp-phonegap/blob/master/scripts/copybundle.js)
+In this repository we automate the copying of `nodegp-bundle.debug.js` into your project `www/js` directory so you don't have to, by using a hook found [here.](https://github.com/dcdc-io/node-gp-phonegap/blob/master/scripts/copybundle.js)
 
 The bundle makes the `GlobalPlatform` class globally available so that you can reference it in subsequent scripts just as we do in the `index.js`. See [www/js/index.js](https://github.com/dcdc-io/node-gp-phonegap/blob/master/www/js/index.js) for a full working example.
