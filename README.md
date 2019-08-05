@@ -2,6 +2,14 @@
 
 An example node-gp integration for phonegap-nfc.
 
+# Get Started
+
+```
+git clone https://github.com/dcdc-io/node-gp-phonegap
+cd node-gp-phonegap
+npm install
+```
+
 # A hastie example (see also www/js/index.js):
 
 ```javascript
