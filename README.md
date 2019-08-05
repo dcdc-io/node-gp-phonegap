@@ -10,9 +10,13 @@ cd node-gp-phonegap
 npm install
 ```
 
-# A hastie example (see also www/js/index.js):
+# A hastie example:
+
+note: see [www/js/index.js](https://github.com/dcdc-io/node-gp-phonegap/blob/master/www/js/index.js) for a full working example.
 
 ```javascript
+// ...
+
 // connect to device
 await nfc.connect('android.nfc.tech.IsoDep', 500);
 
@@ -36,4 +40,6 @@ const packages = await gpcard.getPackages()
 const capBuffer = new JSZip()
 await capBuffer.load(SOME_CAP_FILE_AS_BUFFER)
 await gpcard.installAuto(capBuffer)
+
+// ...
 ```
