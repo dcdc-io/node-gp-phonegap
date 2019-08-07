@@ -14,5 +14,13 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-webpack": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-webpack"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }
