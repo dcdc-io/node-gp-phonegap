@@ -10,30 +10,12 @@ cd node-gp-phonegap
 npm install
 ```
 
-# A hastie example (see also www/js/index.js):
+You should use the supplied browersify bundle in the `/browser` directory of the `node-gp` module. You would typically reference the bundle as a `<script/>` tag in your `index.html`:
 
-```javascript
-// connect to device
-await nfc.connect('android.nfc.tech.IsoDep', 500);
-
-// write a logging transceive function around phonegap-nfc#transceive
-const loggingTransceive = async function(buffer) {
-    console.log(">> " + util.arrayBufferToHexString(buffer))
-    const responseBuffer = Buffer.from(await nfc.transceive(util.arrayBufferToHexString(buffer)))
-    console.log("<< " + util.arrayBufferToHexString(responseBuffer))
-    return responseBuffer
-}
-
-// get a GlobalPlatform instance
-const gpcard = new GlobalPlatform(loggingTransceive)
-await gpcard.connect()
-
-// get an array of applets and packages form the device
-const applets = await gpcard.getApplets()
-const packages = await gpcard.getPackages()
-
-// install a .cap file from a buffer
-const capBuffer = new JSZip()
-await capBuffer.load(SOME_CAP_FILE_AS_BUFFER)
-await gpcard.installAuto(capBuffer)
+```html
+<script type="text/javascript" src="js/nodegp-bundle.debug.js"></script>
 ```
+
+In this repository we automate the copying of `nodegp-bundle.debug.js` into your project `www/js` directory so you don't have to, by using a hook found [here.](https://github.com/dcdc-io/node-gp-phonegap/blob/master/scripts/copybundle.js)
+
+The bundle makes the `GlobalPlatform` class globally available so that you can reference it in subsequent scripts just as we do in the `index.js`. See [www/js/index.js](https://github.com/dcdc-io/node-gp-phonegap/blob/master/www/js/index.js) for a full working example.
