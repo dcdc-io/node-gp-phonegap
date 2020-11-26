@@ -17,8 +17,10 @@
     "cordova-android": "^8.0.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-webpack": "^0.4.4",
+    "jszip": "^3.5.0",
     "node-gp": "^1.11.0",
-    "phonegap-nfc": "^1.0.3"
+    "phonegap-nfc": "^1.0.3",
+    "phonegap-nfc-fxmanifest": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

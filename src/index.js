@@ -17,6 +17,8 @@
  * under the License.
  */
 
+var JSZip = require("jszip")
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -34,6 +36,36 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
         nfc.addTagDiscoveredListener(app.handleConnected);
+    },
+
+    doTestInstall: async function(gpcard) {
+        // 1. detect applet
+        //const applets = await gpcard.getApplets()
+        // 2. if applet exists, remove it
+        // 3. load applet
+
+        const data = await app.fetchLocal("caps/javacard-ndef-full-plain.cap").then(r => r.arrayBuffer())
+        debugger
+        const zip = await JSZip.loadAsync(data)
+        //const appletCap = new JSZip()
+        
+        const installResponse = await gpcard.installAuto(zip)
+        // 4. check if allpet exists
+    },
+
+    fetchLocal: async function(url) {
+        return new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest
+            xhr.onload = function () {
+                resolve(new Response(xhr.response, { status: xhr.status }))
+            }
+            xhr.onerror = function () {
+                reject(new TypeError('Local request failed'))
+            }
+            xhr.open('GET', url)
+            xhr.responseType = "arraybuffer";
+            xhr.send(null)
+        })
     },
 
     handleConnected: async function(nfcEvent) {
@@ -61,10 +93,15 @@ var app = {
 
             console.log("gpcard connected")
 
+            /// ================================================================================
             // print some stuff
             const applets = await gpcard.getApplets()
             const packages = await gpcard.getPackages()
             app.status(`${applets.length} applets and ${packages.length} packages installed`)
+            /// ================================================================================
+            /// install an app
+            await app.doTestInstall(gpcard)
+            /// ================================================================================
             
         } catch (error) {
             console.error(error)

@@ -19,3 +19,22 @@ You should use the supplied browersify bundle in the `/browser` directory of the
 In this repository we automate the copying of `nodegp-bundle.debug.js` into your project `www/js` directory so you don't have to, by using a hook found [here.](https://github.com/dcdc-io/node-gp-phonegap/blob/master/scripts/copybundle.js)
 
 The bundle makes the `GlobalPlatform` class globally available so that you can reference it in subsequent scripts just as we do in the `index.js`. See [src/index.js](https://github.com/dcdc-io/node-gp-phonegap/blob/master/src/index.js) for a full working example.
+
+
+## Cordova Instructions
+
+`npm install -g cordova`
+
+`cordova platform add android`
+
+`cordova build`
+
+- remove line 39 of nfx plugin.xml
+
+- force add plugin
+
+- install https://openjdk.java.net/install/
+
+- install androic sdk
+
+- cordova run android --device
